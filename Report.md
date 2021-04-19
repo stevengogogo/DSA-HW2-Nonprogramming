@@ -122,18 +122,64 @@ Let another pancake be `P_new` with testiness `t_new`. And assume list `L` is so
 
 **Comparison to extrema**
 
-
-```
+```=
 Pancake-God-Oracle(L[1], L[end], P_new)
 ```
 
+- if `output=1`: Insert `P_new` at front
+- else if `output=end`: Insert `P_new` at reat
+- Else:
+    - Use binary search to find location
 
-As described in [P1-2](#1-10pts), we can use extrema to build a **comparison function** from `Pancake-God-Oracle`. 
+
+**Binary Search**
+
+As described in [P1-2](#1-10pts), we can use extrema to build a **comparison function** from `Pancake-God-Oracle`. After checking `P_new` is between `L[1]` and `L[end]`, we can use the comparison function to binary search which acheive $O(n\lg n)$ complexity.
+
+
+```python=
+Insert(L, P_new)
+    i = Pancake-God-Oracle(L[1],L[end],P_new)
+    if i==1
+        insert P_new at 1
+    elseif i==end
+        insert P_new at end
+    else
+        I = Binary-Search(L[2:end],P_new)
+        insert P_new at I+1
+end
+
+compare(i,j)
+    I = Pancake-God-Oracle(i,j, L[1])
+    if I==i
+        return 1 # i>j
+    else 
+        return 2 
+end
+
+Binary-Search(L,P_new)
+    high = L.end
+    low = 1
+    value ans;
+    while (high>=low)
+        mid = (high + low)/2
+        if compare(L[mid], P_new) == 1
+            high = mid - 1
+        else
+            ans = mid
+            low = mid + 1
+        end
+    end
     
+    return ans
+end
+```
 
-#### 想法
+
+The reason to use bianry search:
+
+1. $L$ is sorted
+2. `P_new` is in the middle of the extremas.
 
 
-1. 如果在次大, 次小 之間, binary search
-2. 如果比次大還大, 次小還小
-    - 
+### 4. (5pts)
