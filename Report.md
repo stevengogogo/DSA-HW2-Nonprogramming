@@ -1,15 +1,9 @@
----
-puppeteer:
-  landscape: false
-  format: "A4"
-  timeout: 500 # <= Special config, which means waitFor 3000 ms
-  export_on_save:
-    puppeteer: true # export PDF on save
-    puppeteer: ["pdf"] # export PDF and PNG files on save
----
+[![hackmd-github-sync-badge](https://hackmd.io/lQc0xN-7RsOa9Ux7Z9VVjQ/badge)](https://hackmd.io/lQc0xN-7RsOa9Ux7Z9VVjQ)
+
+
 <center>
 
-# Report
+# Report - HW2
 
 Shao-Ting Chiu
 `r07945001@ntu.edu.tw`
@@ -21,38 +15,26 @@ Shao-Ting Chiu
 
 
 
+### 1. (10pts)
 
+Because median is surely not one of the extemes, we can try $n-2$ times eliminiate the impossible i-of-median one by one. The remaining two $P$ will be the extremes. 
 
-
----
-
-
-## Code
-
-### H3
-#### H4
-##### H5
-###### H6
-
-
-```c  {.line-numbers}
-int a;
+```cpp
+Find-Extremes(P)
+    Is = [1,2,3]
+   
+    for j = 4 to P.len+1
+        i, v = PANCAKE-GOD-ORACLE(P,Is...)
+        remove(Is[i])
+        if j == P.len+1
+            break
+        append(Is, j)
+    
+    return Is
 ```
 
-## Citation
+Therefore, totoal iteration is $n-1$ times $\in O(n)$
+
+### 2. (20pts)
 
 
-Something important [^1][^3].
-
-## Equations
-
-$$
-\begin{align}
- \lim_{n\rightarrow\infty} \frac{f}{g} &= 0 \\
- &= 3
-\end{align}
-$$
-
-
-[^1]: Citation 1
-[^3]: Auto indexing
