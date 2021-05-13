@@ -27,7 +27,7 @@
 
 Because median is surely not one of the extemes, we can try $n-2$ times eliminiate the impossible i-of-median one by one. The remaining two $P$ will be the extremes. 
 
-```cpp
+```cpp=
 Find-Extremes(P)
     Is = [1,2,3]
    
@@ -114,7 +114,7 @@ end
 1. Algorithm: Sort using Median and Just 1 comparison in $O(n \log n)$. [Stackoverflow][^p-2]
 2. Introduction to Algorithm. Page 171.
 
-[^p-2]: https://stackoverflow.com/questions/19080059/algorithmsort-using-median-and-just-1-comparison-in-on-log-n
+[^p-2]: [Algorithm Sort with median. StackOverflow](https://stackoverflow.com/questions/19080059/algorithmsort-using-median-and-just-1-comparison-in-on-log-n)
 
 
 
@@ -196,7 +196,106 @@ The reason to use bianry search:
 
 
 
+---
 
+## Problem 2 - Tree (65pt)
+
+### 3. (10pt)
+
+<center>
+<img width=300 src="https://i.imgur.com/k3pNorJ.jpg">
+
+**Fig. 2-1.** Reconstructed binary tree[^lc:BT].
+</center>
+
+
+[^lc:BT]:[LeetCode: Binary Tree Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/solution/)
+
+
+### 4. (15pt)
+
+
+**Definition of root element**
+
+The definition of a root is always the **first** element of the **preorder traversal**. Thus, the determination of a root is unique, which is `inorder[1]`.
+
+**Definition of leaves**
+
+With a given root/subroot, the definition of left and right sets of leaves is unique (**Fig. 2-2**). Recursively, all the set of leaves will be uniquely distributed with complete inorder and preorder traversal.
+
+**Conclusion**
+
+Ther is no two binary trees share with the same `(inorder, preorder)` pair.
+
+<center>
+<img width=300 src="https://i.imgur.com/J4m4hog.jpg">
+
+**Fig. 2-2.** Reucrsive algoritm of reconstructing a binary tree with preorder and inorder traversal 
+[^Tutorial:BST-Construct].
+</center>
+
+
+### 5. (15pt)
+
+**💡Idea**
+- Use recursive method described in **Fig. 2-2**.
+- Use a look-table (**Fig. 2-3**) to record the **preorder index** and **inorder index** in respect of a **key** which is the alphabet in **Fig. 2-2**. $O(n)$ time complexity is required for this process including screening these two arrays.
+- **A recursive method** to build a binary tree. By intuition, the **worst case** of constructing a binary tree with a **left-connected linked list** that requires $O(n)$ time complexity
+
+
+
+<center>
+<img width=300 src="https://i.imgur.com/GGDW9tN.jpg">
+
+**Fig. 2-3.** Data structure for storing the indexes of **inorder** and **postorder** array.
+</center>
+
+**🔧Implementation**
+
+
+- Constructing a look-up array
+    ```cpp=
+    struct node
+        iIN  //index in inorder array
+        iPRE //index in preorder array
+        left //leaves
+        right
+    end
+
+    function getPairedArr(inorder, preorder)
+
+        node arr[length(inorder)];
+
+        for i = 1 to length(inorder)
+            arr[inorder[i]].iIN = i
+        end
+
+        for i = 1 to length(preorder)
+            arr[preorder[i]].iPRE = i
+        end
+
+        return arr
+    end
+    ```
+    
+- Reconstructing a binary tree
+
+
+//TODO
+```cpp=
+buildBST(inorder, preorder, iIN)
+    map = getPairedArr(inorder, preorder)
+    
+end
+
+
+connect(map, inorder, preorder, iIN)
+    
+    IPRE = map[inorder[iIN]].iPRE
+    connect(map, inorder[iIN:end], postorder[1:iPRE], iIN+1 )
+end
+
+```
 
 ---
 
@@ -222,9 +321,9 @@ Both *Case 1* and *Case 2* can be recursively (or loop) implemented. The only di
 </center>
 
 
-**Implementation**
+**🔧Implementation**
 
-```cpp=!
+```cpp=
 h.modify(x, v){
     if (x.key==v)
       //Do nothing
@@ -372,7 +471,7 @@ D.extractMinCol(3 ); ShowState();
 </center>
 
 
-**Implementation: Data Structure**
+**🔧Implementation: Data Structure**
 
 1. Node $A_{i,j}$ 
     ```cpp=
@@ -402,7 +501,7 @@ D.extractMinCol(3 ); ShowState();
     ```
 
 
-**Implementation: Operations**
+**🔧Implementation: Operations**
 
 
 
@@ -478,3 +577,10 @@ The extraction on either `col` or `row` requires a following heap deletion. Both
 We need to delete the same item in two heaps. Use the `iHc` and `iHr` to keep track on the location. The deletion can be done by simply set `d.Hrp[iHc] = -Inf` with heapify and extraction. All of them requires logarithmic time complexity on each side. In summary, the total time complexity is `O(log N + log M)`
 
 
+
+
+
+
+
+
+[^Tutorial:BST-Construct]: [ Construction of unique Binary tree. Book chapter](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwiIzf_Av8bwAhUvy4sBHem3BCgQFjABegQIBBAD&url=https%3A%2F%2Fs3-eu-west-1.amazonaws.com%2Fpfigshare-u-files%2F1800958%2FConstructionofuniqueBinarytree.pdf&usg=AOvVaw23KzE0wgqxMB83ms4ZTp6Y)
