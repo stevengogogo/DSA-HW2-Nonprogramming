@@ -1,6 +1,6 @@
  # Report-Markdown-Preview-Enhanced
 
-[![hackmd-github-sync-badge](https://hackmd.io/nLmc8gAiQNCgLfrH7RHBbw/badge)](https://hackmd.io/nLmc8gAiQNCgLfrH7RHBbw)
+[![hackmd-github-sync-badge](https://hackmd.io/lQc0xN-7RsOa9Ux7Z9VVjQ)
 
 
 Template for createing report PDF with Markdown Preview Enhanced 
