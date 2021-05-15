@@ -200,6 +200,49 @@ The reason to use bianry search:
 
 ## Problem 2 - Tree (65pt)
 
+
+### 1. (10pt)
+
+**💡Idea**
+
+- Because $k-1 < k$, $t_{k-1}$ is on the left side of $t_k$ 
+- On the other hand, $t_{k-1}$ possesses largest index on the left side of $t_{k}$
+- Therefore, one can use the policy to find $t_{k-1}$ from $t_k$
+    > Turn left, and keep going right until reaching a NIL
+
+**🔧Implementataion**
+
+```cpp=
+function findPrev(t_k)
+    
+    if(t_k.left == NIL)
+        return NIL
+    end
+    
+    t_prev = t_k.left
+    
+    while(t_prev.right != NIL)
+        t_prev = t_prev.right
+    end
+    
+    return  t_prev
+end
+```
+
+
+### 2. (15pt)
+
+
+
+Because avery sub-tree of $T$ is a binary search tree, and left sub-sub-tree contains data earlier than the sub-tree's root in time. That is, for the set $\{t_i | i\in left~side~of~t_k\}$ fullfills the inequality $t_{i} < t_{k}$.
+
+$\textbf{t_1 < t_2 < ...} < t_k < \cdots < t_{n-1} < t_n$
+
+where the set of left nodes is in **bold** font. We can first proof that we can find the previous node of $t_{1}$ that is an empty set (`NIL`). 
+
+For finding $t_{k-1}$, there is no other value between $t_{k-1}$ and $t_{k}$ that is smaller than $t_k$. Therefore, we need to find the biggies value in the set $\{t_i | i\in left~side~of~t_k\}$. By keep reaching the **right leaf**, we can get the biggest value of $\{t_i | i\in left~side~of~t_k\}$. That is $t_{k-1}$.
+
+
 ### 3. (10pt)
 
 <center>
@@ -281,21 +324,44 @@ Ther is no two binary trees share with the same `(inorder, preorder)` pair.
 - Reconstructing a binary tree
 
 
-//TODO
-```cpp=
+```cpp= 
 buildBST(inorder, preorder, iIN)
     map = getPairedArr(inorder, preorder)
-    
+    iNA = 1
+    root= _buildBst(map, inorder, preorder, &iNA)
+    return root
 end
 
 
-connect(map, inorder, preorder, iIN)
+_buildBST(map, inArr, preArr, *iNA)
     
-    IPRE = map[inorder[iIN]].iPRE
-    connect(map, inorder[iIN:end], postorder[1:iPRE], iIN+1 )
+    //Reach end
+    if (length(inArr)==0 || *iNA > length(preArr))
+        return NULL
+    end
+    
+    //Asign new root
+    root = map[preArr[*iNA]]
+    
+    Iin = map[preArr[*iNA]].iIN
+    
+    *iNA++
+    
+    root.left = _buildBst(map, inArr[1:Iin-1], preArr, iNA)
+    root.right = _buildBst(map, inArr[Iin+1:end], preArr, iNA)
+    
+    
+    return root
 end
 
 ```
+Note: 
+1. This framework is majorly inspired by [^Tutorial:BST-Construct] and [^leet:BSTrecursive]
+2. In Julia: `a[3:end] == []` when `length(a) == 2`[^juliaArr]
+
+
+ [^leet:BSTrecursive]: [BST recursive](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/discuss/1204516/recursive)
+
 
 ---
 
@@ -584,3 +650,16 @@ We need to delete the same item in two heaps. Use the `iHc` and `iHr` to keep tr
 
 
 [^Tutorial:BST-Construct]: [ Construction of unique Binary tree. Book chapter](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwiIzf_Av8bwAhUvy4sBHem3BCgQFjABegQIBBAD&url=https%3A%2F%2Fs3-eu-west-1.amazonaws.com%2Fpfigshare-u-files%2F1800958%2FConstructionofuniqueBinarytree.pdf&usg=AOvVaw23KzE0wgqxMB83ms4ZTp6Y)
+
+
+ [^juliaArr]: ```julia
+    julia> a = [1,2,3,4]
+    4-element Array{Int64,1}:
+    1
+    2
+    3
+    4
+
+    julia> a[5:end]
+    Int64[]
+    ```
