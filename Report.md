@@ -128,7 +128,7 @@ The insertion takes in two parts:
 1. Comparison to extrema
 2. Binary search with extrema as a base number
 
-Let another pancake be `P_new` with testiness `t_new`. And assume list `L` is sorted with extremes locate at `L[1]` and `L[end]`. We want to find a site `i` to insert  `P_new` such that `L[i]`
+Let another pancake be `P_new` with testiness `t_new`. And assume list `L` is sorted with extremes locate at `L[1]` and `L[end]`. We want to find a site `i` to insert  `P_new` such that `L[i]` (**Fig. 2-1**).
 
 **Comparison to extrema**
 
@@ -136,26 +136,26 @@ Let another pancake be `P_new` with testiness `t_new`. And assume list `L` is so
 Pancake-God-Oracle(L[1], L[end], P_new)
 ```
 
-- if `output=1`: Insert `P_new` at front
-- else if `output=end`: Insert `P_new` at reat
-- Else:
-    - Use binary search to find location
+1. if `output=1`: Insert `P_new` at front
+2. else if `output=end`: Insert `P_new` at end
+3. Else:
+    - Use **binary search** to find location
 
 
 **Binary Search**
 
-As described in [P1-2](#1-10pts), we can use extrema to build a **comparison function** from `Pancake-God-Oracle`. After checking `P_new` is between `L[1]` and `L[end]`, we can use the comparison function to binary search which acheive $O(n\lg n)$ complexity.
+As described in [P1-2](#1-10pts), we can use extrema to build a **comparison function** from `Pancake-God-Oracle`. After checking `P_new` is between `L[1]` and `L[end]`, we can apply the comparison function to **binary search** , which acheive $O(\log n)$ complexity, to find the place to insert `P_new`.
 
 
 ```python=
 Insert(L, P_new)
     i = Pancake-God-Oracle(L[1],L[end],P_new)
     if i==1
-        insert P_new at 1
+        insert P_new at 1 #case 1
     elseif i==end
-        insert P_new at end
-    else
-        I = Binary-Search(L[2:end],P_new)
+        insert P_new at end #case 2
+    else #case 3
+        I = Binary-Search(L[2:end],P_new, func=compare)
         insert P_new at I+1
 end
 
@@ -166,34 +166,98 @@ compare(i,j)
     else 
         return 2 
 end
-
-Binary-Search(L,P_new)
-    high = L.end
-    low = 1
-    value ans;
-    while (high>=low)
-        mid = (high + low)/2
-        if compare(L[mid], P_new) == 1
-            high = mid - 1
-        else
-            ans = mid
-            low = mid + 1
-        end
-    end
-    
-    return ans
-end
 ```
 
 
 The reason to use bianry search:
 
-1. $L$ is sorted
-2. `P_new` is in the middle of the extremas.
+1. $L$ is **sorted**.
+2. When `P_new` is in the **middle** of the extremas, **binary search** is the fastest way to find an item in an **sorted** array.
 
 
-### 4. (5pts)
+<center>
 
+<img width=500 src="https://i.imgur.com/hx4MUIS.png">
+
+**Fig. 2-1.** Conditions of inserting a new value. 
+</center>
+
+
+### 4. (5pt)
+
+In **problem 1-3**, the **insertion** keeps the list **sorted** in $O(\log n)$ query complexity. Without locating the boundary pancakes, we can randomly choose two pancakes for starting. In **Fig. 2-2**, any list of two items is sorted. Therefore, we can apply the insertion algorithm proposed in **problem 1-3** (**Fig. 2-1**) to add the rest of pancakes one by one. The following is the proof of the sorting algorithm based on insertion.
+
+**Initiation**
+
+Any list of two items is **sorted**.
+
+**Loop invariance**
+
+Insertion algoritm in **Problem 1-3** keeps the inserted list sorted.
+
+
+**Termination**
+
+The last element is inserted with the same algorithm, so the list remains sorted.
+
+
+On the other hand, the query complexity of one insertion is $O(\log n)$, and there are $n-2$ times of calling the insertion algorithm. Therefore, the resulting query complexity is $O(n\log n)$ for $n>2$
+
+
+
+<center>
+<img width=400 src="https://i.imgur.com/xXAwwL5.png">
+</center>
+
+
+**Fig. 2-2.**   Any list of two items is sorted, and can be applied to the insertion algorithm described in **Fig. 2-1**.
+
+
+
+
+### 5. (20 pt)
+
+To sort the list of $t_{i}$, the permutation can be represented by the **decision-tree model** (**Fig. 2-3**). We can annotate each leaf by a permutation 
+
+
+
+$$n! \leq l \leq 3^h$$
+
+$$\begin{align} h &\geq \log(n!) \\
+                 &= \Omega(n\log n)
+\end{align}$$
+
+By the definition of $\Omega$,
+
+$$\lim_{n\to \infty} \frac{n\log n}{f(n)} > 0$$
+
+$$\frac{1}{2}$$
+
+Therefore, the limit $\lim_{x\to \infty} \frac{n\log n}{f(n)}=0$ is inachievable, to say, $f(n) \notin o(n\log)$.
+
+
+
+[^diffO]
+
+<center>
+<img  src="https://i.imgur.com/ieFNpO1.jpg">
+</center>
+
+**Fig. 2-3.** A **decision tree model** of sorting $t_{i}$ where $i\in \{1,...,4\}$ with calling the function `PANCAKE-GOD-ORACLE(P,i,j,k)`. The syntax $\fbox{t1:t2:t3}$ represents a function call `PANCAKE-GOD-ORACXLE(P,1,2,3)`, and the output is labelled on the links. The sorted list is described in the bracket $\langle t_i ,\cdots,t_j\rangle$.
+
+
+
+
+[^diffO]: [Difference between Big-O and Little-O Notation. StackOverflow](https://stackoverflow.com/questions/1364444/difference-between-big-o-and-little-o-notation)
+
+
+### 6. (15pt)
+
+
+### 7. (5pt)
+
+
+### 8. (15pt)
 
 
 ---
