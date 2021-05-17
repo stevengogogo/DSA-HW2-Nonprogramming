@@ -1,4 +1,9 @@
-
+---
+toc:
+  depth_from: 1
+  depth_to: 3
+  ordered: false
+---
 
 <a href="https://hackmd.io/lQc0xN-7RsOa9Ux7Z9VVjQ"><img width=150 src=https://i.imgur.com/f4QaiGE.png></a>
 
@@ -27,7 +32,7 @@
 
 Because median is surely not one of the extemes, we can try $n-2$ times eliminiate the impossible i-of-median one by one. The remaining two $P$ will be the extremes. 
 
-```cpp=
+```cpp {.line-numbers}
 Find-Extremes(P)
     Is = [1,2,3]
    
@@ -73,7 +78,7 @@ where $i,j\notin \{ P_{ext1}, P_{ext2} \}$
 
 Since we got the comparison function, we need to first allocate extremes to `P[1]` and `P[end]`. we can apply sorting algorithm, which is optimal in time complexity, to the sequence `P[2]...P[end-1]` (Noted that at this moment, $P[1]=P_{ext1}$, $P[end] = P_{ext2}$, $P[i] = P_k~if~k\in \{1,\cdots,end-1\}$). To acheive $O(n\lg n)$, I chose **quick sort** to the region with index `[2,...,end-1]` and use `compare` function proved above. For clarity, I listed the pseudo code below which is modified from *ITA P.171*:
 
-```cpp=
+```cpp {.line-numbers}
 Quicksort(A,p,r)
     if compare(p,r)
         q =Partition(A,p,r)
@@ -132,7 +137,7 @@ Let another pancake be `P_new` with testiness `t_new`. And assume list `L` is so
 
 **Comparison to extrema**
 
-```=
+``` {.line-numbers}
 Pancake-God-Oracle(L[1], L[end], P_new)
 ```
 
@@ -147,7 +152,7 @@ Pancake-God-Oracle(L[1], L[end], P_new)
 As described in [P1-2](#1-10pts), we can use extrema to build a **comparison function** from `Pancake-God-Oracle`. After checking `P_new` is between `L[1]` and `L[end]`, we can apply the comparison function to **binary search** , which acheive $O(\log n)$ complexity, to find the place to insert `P_new`.
 
 
-```python=
+```python {.line-numbers}
 Insert(L, P_new)
     i = Pancake-God-Oracle(L[1],L[end],P_new)
     if i==1
@@ -217,27 +222,33 @@ On the other hand, the query complexity of one insertion is $O(\log n)$, and the
 
 ### 5. (20 pt)
 
-To sort the list of $t_{i}$, the permutation can be represented by the **decision-tree model** (**Fig. 2-3**). We can annotate each leaf by a permutation 
 
 
+In sorting with `PANCAKE-GOD-ORACLE`, we use the medians between three arguments to gain order information about an input sequence $\langle t_1,t_2,\cdots,t_n\rangle$. we perform the tests, $t_i \in (t_j, t_k)$, $t_j\notin (t_i, t_k)$ and $t_k \notin (t_k, t_j)$ when `PANCAKE-GOD-ORACLE(P,i,j,k)=Pi`. we can not inspect the values of the elements or gain order information about the tastes in any other way.
+
+
+To sort the list of $t_{i}$, the permutation can be represented by the **decision-tree model** (**Fig. 2-3**). We can annotate each leaf by a permutation $\langle \pi(1),\cdots,\pi(n)\rangle$. The execution of the sorting algorithm is equal to tracing a path from root of the decision tree down to a leaf. Each node represents a query, and there are $3$ possible outcomes that results in three sub-trees (**Fig. 2-3**). When coming to a leaf, the input sequence is already *sorted* in a order of $t_{\pi(1)} < \cdots <t_{\pi(n)}$ and $t_{\pi(1)} > \cdots  > t_{\pi(n)}$. Because a correct sorting algorithm must be able to produce each permutation of its input, each of the $\frac{n!}{2}$ permutatoins muse appear as one of the leaves of the decision tree. 
+
+Consider a decision tree of height $h$ with $l$ reachable leaves to sort $n$ elements. Because each of the $n!$ permutations of the input appears as some leaf, that is, $n!<l$. Since a **tertiary tree** of height $h$ has no more than $3^h$ leaves. Therefore,
 
 $$n! \leq l \leq 3^h$$
+
+which, by using logarithms, shows
 
 $$\begin{align} h &\geq \log(n!) \\
                  &= \Omega(n\log n)
 \end{align}$$
 
-By the definition of $\Omega$,
+where $\log(n!) = \Omega(n\log n)$ is derived from **Stirling's approximation**[^stir].
+
+By the definition of $\Omega$[^diffO],
 
 $$\lim_{n\to \infty} \frac{n\log n}{f(n)} > 0$$
 
-$$\frac{1}{2}$$
-
-Therefore, the limit $\lim_{x\to \infty} \frac{n\log n}{f(n)}=0$ is inachievable, to say, $f(n) \notin o(n\log)$.
 
 
+where $f(n)$ is the query complexity in respect of $n$. Therefore, the equation $\lim_{x\to \infty} \frac{n\log n}{f(n)}=0$ is inachievable, to say, $f(n) \notin o(n\log)$.
 
-[^diffO]
 
 <center>
 <img  src="https://i.imgur.com/ieFNpO1.jpg">
@@ -247,11 +258,12 @@ Therefore, the limit $\lim_{x\to \infty} \frac{n\log n}{f(n)}=0$ is inachievable
 
 
 
-
+[^stir]: $n!=\sqrt{2\pi n}(\frac{n}{e})^{n} e^{\alpha_n}$. from CLRS P.58
 [^diffO]: [Difference between Big-O and Little-O Notation. StackOverflow](https://stackoverflow.com/questions/1364444/difference-between-big-o-and-little-o-notation)
 
 
 ### 6. (15pt)
+
 
 
 ### 7. (5pt)
@@ -276,7 +288,7 @@ Therefore, the limit $\lim_{x\to \infty} \frac{n\log n}{f(n)}=0$ is inachievable
 
 **🔧Implementataion**
 
-```cpp=
+```cpp {.line-numbers}
 function findPrev(t_k)
     
     if(t_k.left == NIL)
@@ -361,7 +373,7 @@ Ther is no two binary trees share with the same `(inorder, preorder)` pair.
 
 
 - Constructing a look-up array
-    ```cpp=
+    ```cpp {.line-numbers}
     struct node
         iIN  //index in inorder array
         iPRE //index in preorder array
@@ -388,7 +400,7 @@ Ther is no two binary trees share with the same `(inorder, preorder)` pair.
 - Reconstructing a binary tree
 
 
-```cpp= 
+```cpp {.line-numbers} 
 buildBST(inorder, preorder, iIN)
     map = getPairedArr(inorder, preorder)
     iNA = 1
@@ -453,7 +465,7 @@ Both *Case 1* and *Case 2* can be recursively (or loop) implemented. The only di
 
 **🔧Implementation**
 
-```cpp=
+```cpp {.line-numbers}
 h.modify(x, v){
     if (x.key==v)
       //Do nothing
@@ -604,7 +616,7 @@ D.extractMinCol(3 ); ShowState();
 **🔧Implementation: Data Structure**
 
 1. Node $A_{i,j}$ 
-    ```cpp=
+    ```cpp {.line-numbers}
     struct node{
         key
         i
@@ -615,14 +627,14 @@ D.extractMinCol(3 ); ShowState();
     }
     ```
 2. Heap
-    ```cpp=
+    ```cpp {.line-numbers}
     struct heap{
         node* array[N] //M
         len //[0,N]/[0.M]
     }
     ```
 3. Data Structure `D`
-    ```cpp=
+    ```cpp {.line-numbers}
     struct D{
         heap Hc[M]
         heap Hr[N]
@@ -636,7 +648,7 @@ D.extractMinCol(3 ); ShowState();
 
 
 1. `D.add(i, j, v)`
-    ```cpp=
+    ```cpp {.line-numbers}
     function add(d::D, i,j,v)
         //Register A[i,j]
         d.A[i,j].avail = true
@@ -653,7 +665,7 @@ D.extractMinCol(3 ); ShowState();
 
 2. `D.extractMinRow(i)`
 
-    ```cpp=
+    ```cpp {.line-numbers}
     function extractMinRow(d::D, r)
 
         d.Hr[0].avail = false
@@ -667,7 +679,7 @@ D.extractMinCol(3 ); ShowState();
 
 3. `D.extractMinCol(i)`
 
-    ```cpp=
+    ```cpp {.line-numbers}
     function extractMinRow(d::D, c)
 
         d.Hc[0].avail = false
@@ -679,7 +691,7 @@ D.extractMinCol(3 ); ShowState();
 
 4. `D.delete(i, j)`
 
-    ```cpp=
+    ```cpp {.line-numbers}
     function delete(d::D, i, j)
        d.A[i,j].avail = false
        deleteHeap(d.Hr, d.A[i,j].iHr)
