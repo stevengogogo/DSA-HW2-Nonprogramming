@@ -268,8 +268,19 @@ where $f(n)$ is the query complexity in respect of $n$. Therefore, the equation 
 
 ### 7. (5pt)
 
+$$\begin{align*} 
+T(n) &= 3 T(n - \frac{1}{3}n) + \Theta(1) \\
+     &= 3T(\frac{n}{3/2}) + \Theta(1)
+\end{align*}$$
+
+
 
 ### 8. (15pt)
+
+
+
+
+
 
 
 ---
