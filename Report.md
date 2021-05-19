@@ -70,7 +70,7 @@ where $i,j\notin \{ P_{ext1}, P_{ext2} \}$
     - `compare(i,j) == 2`
 - because  $P_{ext}$ is always bigger or smaller than both of `P[i]` and `P[j]`
 - For `P_ext` is a minimum, vice versa.
-- We can not know `compare` is `argmin` or `argmax` function of `P[i]` and `P[j]`. But we can guarantee the monotonicity by using `compare` in quick sort.
+- We can not know `compare` is `argmin` or `argmax` function of `P[i]` and `P[j]`. But we can guarantee the monotonicity by using `compare` in *quick sort*.
 
 
 **Apply to comparison sort**
@@ -133,7 +133,7 @@ The insertion takes in two parts:
 1. Comparison to extrema
 2. Binary search with extrema as a base number
 
-Let another pancake be `P_new` with testiness `t_new`. And assume list `L` is sorted with extremes locate at `L[1]` and `L[end]`. We want to find a site `i` to insert  `P_new` such that `L[i]` (**Fig. 2-1**).
+Let another pancake be `P_new` with testiness `t_new`. And assume list `L` is sorted with extremes locate at `L[1]` and `L[end]`. We want to find a site `i` to insert  `P_new` such that `L` remains sorted (**Fig. 2-1**).
 
 **Comparison to extrema**
 
@@ -227,15 +227,15 @@ On the other hand, the query complexity of one insertion is $O(\log n)$, and the
 In sorting with `PANCAKE-GOD-ORACLE`, we use the medians between three arguments to gain order information about an input sequence $\langle t_1,t_2,\cdots,t_n\rangle$. we perform the tests, $t_i \in (t_j, t_k)$, $t_j\notin (t_i, t_k)$ and $t_k \notin (t_k, t_j)$ when `PANCAKE-GOD-ORACLE(P,i,j,k)=Pi`. we can not inspect the values of the elements or gain order information about the tastes in any other way.
 
 
-To sort the list of $t_{i}$, the permutation can be represented by the **decision-tree model** (**Fig. 2-3**). We can annotate each leaf by a permutation $\langle \pi(1),\cdots,\pi(n)\rangle$. The execution of the sorting algorithm is equal to tracing a path from root of the decision tree down to a leaf. Each node represents a query, and there are $3$ possible outcomes that results in three sub-trees (**Fig. 2-3**). When coming to a leaf, the input sequence is already *sorted* in a order of $t_{\pi(1)} < \cdots <t_{\pi(n)}$ and $t_{\pi(1)} > \cdots  > t_{\pi(n)}$. Because a correct sorting algorithm must be able to produce each permutation of its input, each of the $\frac{n!}{2}$ permutatoins muse appear as one of the leaves of the decision tree. 
+To sort the list of $t_{i}$, the permutation can be represented by the **decision-tree model** (**Fig. 2-3**). We can annotate each leaf by a permutation $\langle \pi(1),\cdots,\pi(n)\rangle$. The execution of the sorting algorithm is equal to tracing a path from root of the decision tree down to a leaf. Each node represents a query, and there are $3$ possible outcomes that results in three sub-trees (**Fig. 2-3**). When coming to a leaf, the input sequence is already *sorted* in an order of $t_{\pi(1)} < \cdots <t_{\pi(n)}$ and $t_{\pi(1)} > \cdots  > t_{\pi(n)}$. Because a correct sorting algorithm must be able to produce each permutation from its input, each of the $\frac{n!}{2}$ permutatoins muse appear as one of the leaves of the decision tree. 
 
-Consider a decision tree of height $h$ with $l$ reachable leaves to sort $n$ elements. Because each of the $n!$ permutations of the input appears as some leaf, that is, $n!<l$. Since a **tertiary tree** of height $h$ has no more than $3^h$ leaves. Therefore,
+Consider a decision tree of height $h$ with $l$ reachable leaves to sort $n$ elements. Because each of the $\frac{n!}{2}$ permutations of the input appears as some leaf, that is, $\frac{n!}{2}<l$. Since a **tertiary tree** of height $h$ has no more than $3^h$ leaves. Therefore,
 
-$$n! \leq l \leq 3^h$$
+$$\frac{n!}{2} \leq l \leq 3^h$$
 
 which, by using logarithms, shows
 
-$$\begin{align} h &\geq \log(n!) \\
+$$\begin{align} h &\geq \log_{3}(n!) - \log_{3}(2) \\
                  &= \Omega(n\log n)
 \end{align}$$
 
@@ -270,7 +270,7 @@ When $n=2$, the list is sorted by `swap` operation.
 
 **Suppose first `ELF-SORT` call sorts the sub-list, the following operation remain the list sorted**
 
-We assume the first $\frac{2}{3}n$ can be sorted by the first `ELF-SORT` call (`Sorted-1` in **Fig.1-5**). The second `ELF-SORT` sorted the last $\frac{2}{3}$ portion of $n$, which is notated as `Sorted-2`. Now, both of first $\frac{1}{3}n$ and last $\frac{2}{3}n$ are sorted locally. As a sorted sub-list, $i>j$ for $i\in [l, l+\Delta)\}$ and $j\in [l+\Delta, l+2\Delta)\}$. The third `ELF-SORT` call is to merge the first $\frac{1}{2}$ of `Sorted-2` with `Sorted-1`. Because $\{i|i\in [l+\Delta, r)\}$ is sorted in descendind order, $i>j$ for $i\in [l+\Delta, r-\Delta)\}$ and $j\in [l+2\Delta, r)\}$. Therefore, it is guaranteed that all the elements in `Sorted-3` is larger than those in `Sorted-2`, and both `Sorted-3` and `Sorted-2` are sorted locally. The list is sorted by `ELF-SORT`.
+We assume the first $\frac{2}{3}n$ can be sorted by the first `ELF-SORT` call (`Sorted-1` in **Fig.1-5**). The second `ELF-SORT` sorted the last $\frac{2}{3}$ portion of $n$, which is notated as `Sorted-2`. Now, both of first $\frac{1}{3}n$ and last $\frac{2}{3}n$ are sorted locally. As a sorted sub-list, $i>j$ for $i\in [l, l+\Delta)\}$ and $j\in [l+\Delta, l+2\Delta)\}$. The third `ELF-SORT` call is to merge the first $\frac{1}{2}$ of `Sorted-2` with `Sorted-1`. Because $\{i|i\in [l+\Delta, r)\}$ is sorted in descendind order, $i>j$ for $i\in [l+\Delta, r-\Delta)\}$ and $j\in [l+2\Delta, r)\}$. Therefore, it is guaranteed that all the elements in `Sorted-3` is larger than those in `Sorted-2`, and both `Sorted-3` and `Sorted-2` are sorted locally, and all of the regions have been sorted twice with different scenerios. Finally, The list is sorted by `ELF-SORT`.
 
 
 
@@ -320,24 +320,26 @@ In **Fig.1-4**, each node represents a function call. The total function call is
 
 **Time complexity of $T(n)$**
 
-Because $f(n) \in \Theta(1)$, $f(n) \in O(n^{\log_b a-\epsilon})$ for some constant $\epsilon>0$. This implies that $f(n/b^i) = O(n/b^j)^{\log_b a - \epsilon}$ where $\log_b a$ is the height of the recursive tree (**Fig. 1-4**). We get 
+Because $f(n) \in \Theta(1)$, $f(n) \in O(n^{\log_b a-c})$ for some constant $c>0$. This implies that $f(n/b^i) = O(n/b^j)^{\log_b a - c}$ where $\log_b a$ is the height of the recursive tree (**Fig. 1-4**). We get 
 
 $$\begin{aligned}
     g(n) &= \sum_{j=0}^{\log_{b}(n) -1} a^j f(\frac{n}{b^j}) \\
-         &= \sum_{j=0}^{\log_{b}(n) -1} a^j (\frac{n}{b^j})^{\log_b a - \epsilon} \\
-         &= n^{\log_b a-\epsilon} \sum_{j=0}^{\log_{b}(n) -1} (\frac{ab^\epsilon}{\underbrace{b^{\log_b a}}_{=a}})^j \\
-         &= n^{\log_b a-\epsilon} \underbrace{\sum_{j=0}^{\log_{b}(n) -1} (b^\epsilon)^j}_{\text{Geometric series}} \\
-         &= n^{\log_b a-\epsilon} (\frac{\overbrace{b^{\epsilon \log_b n}}^{n^\epsilon} - 1}{b^\epsilon - 1}) \\
-         &= n^{\log_b a - \epsilon} (\frac{n^\epsilon - 1}{b^\epsilon - 1}) \\
-         &\in O(n^{log_{b} a})
+         &= \sum_{j=0}^{\log_{b}(n) -1} a^j (\frac{n}{b^j})^{\log_b a - c} \\
+         &= n^{\log_b a-c} \sum_{j=0}^{\log_{b}(n) -1} (\frac{ab^c}{\underbrace{b^{\log_b a}}_{=a}})^j \\
+         &= n^{\log_b a-c} \underbrace{\sum_{j=0}^{\log_{b}(n) -1} (b^c)^j}_{\text{Geometric series}} \\
+         &= n^{\log_b a-c} (\frac{\overbrace{b^{c \log_b n}}^{n^c} - 1}{b^c - 1}) \\
+         &= n^{\log_b a - c} (\frac{n^c - 1}{b^c - 1}) \\
+         &\in \Theta(n^{log_{b} a})
 \end{aligned}$$
 
 Therefore, the total time complexity is 
 $$\begin{aligned}
-    T(n) &= \underbrace{O(n^{\log_b a})}_{g} + \underbrace{\Theta(n^{\log_b a})}_{f} \\
-         &= O(n^{\log_b a}) = O(n^{\log_{3/2}3}) \\
-         &\approx O(n^{2.7}) \in O(n^3) 
+    T(n) &= \underbrace{\Theta(n^{\log_b a})}_{g} + \underbrace{\Theta(n^{\log_b a})}_{f} \\
+         &= \Theta(n^{\log_b a}) = \Theta(n^{\log_{3/2}3}) \\
+         &\approx \Theta(n^{2.7}) \in \Theta(n^3) 
 \end{aligned}$$
+
+
 
 
 <center>
@@ -476,39 +478,36 @@ Ther is no two binary trees share with the same `(inorder, preorder)` pair.
     ```
     
 - Reconstructing a binary tree
-
-
-```cpp {.line-numbers} 
-buildBST(inorder, preorder, iIN)
-    map = getPairedArr(inorder, preorder)
-    iNA = 1
-    root= _buildBst(map, inorder, preorder, &iNA)
-    return root
-end
-
-
-_buildBST(map, inArr, preArr, *iNA)
-    
-    //Reach end
-    if (length(inArr)==0 || *iNA > length(preArr))
-        return NULL
+    ```cpp {.line-numbers} 
+    buildBST(inorder, preorder, iIN)
+        map = getPairedArr(inorder, preorder)
+        iNA = 1
+        root= _buildBst(map, inorder, preorder, &iNA)
+        return root
     end
-    
-    //Asign new root
-    root = map[preArr[*iNA]]
-    
-    Iin = map[preArr[*iNA]].iIN
-    
-    *iNA++
-    
-    root.left = _buildBst(map, inArr[1:Iin-1], preArr, iNA)
-    root.right = _buildBst(map, inArr[Iin+1:end], preArr, iNA)
-    
-    
-    return root
-end
 
-```
+
+    _buildBST(map, inArr, preArr, *iNA)
+        
+        //Reach end
+        if (length(inArr)==0 || *iNA > length(preArr))
+            return NULL
+        end
+        
+        //Asign new root
+        root = map[preArr[*iNA]]
+        
+        Iin = map[preArr[*iNA]].iIN
+        
+        *iNA++
+        
+        root.left = _buildBst(map, inArr[1:Iin-1], preArr, iNA)
+        root.right = _buildBst(map, inArr[Iin+1:end], preArr, iNA)
+        
+        
+        return root
+    end
+    ```
 Note: 
 1. This framework is majorly inspired by [^Tutorial:BST-Construct] and [^leet:BSTrecursive]
 2. In Julia: `a[3:end] == []` when `length(a) == 2`[^juliaArr]
@@ -585,6 +584,10 @@ h.increaseKey(x,y){
     - **NUll end**: Terminate here
     - **One NULL end**: Choose the node with key
     - **Both leaves have key**: Choose the `minimum` to swap
+
+**Time Complexity**
+
+There are no more than $\log |h|$ (height of tree) needed for a swap operation because the **target node moves to a new level of tree and never turns back each time**. The times of `while-loop` depends on **the height of tree**.
 
 **Notes**
 
