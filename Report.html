@@ -448,7 +448,7 @@ end
 </ol>
 <center>
 <img width="500" src="https://i.imgur.com/hx4MUIS.png">
-<p><strong>Fig. 2-1.</strong> Conditions of inserting a new value.</p>
+<p><strong>Fig. 1-1.</strong> Conditions of inserting a new value.</p>
 </center>
 <h3 class="mume-header" id="4-5pt">4. (5pt)</h3>
 
@@ -463,7 +463,7 @@ end
 <center>
 <img width="400" src="https://i.imgur.com/xXAwwL5.png">
 </center>
-<p><strong>Fig. 2-2.</strong>   Any list of two items is sorted, and can be applied to the insertion algorithm described in <strong>Fig. 2-1</strong>.</p>
+<p><strong>Fig. 1-2.</strong>   Any list of two items is sorted, and can be applied to the insertion algorithm described in <strong>Fig. 2-1</strong>.</p>
 <h3 class="mume-header" id="5-20-pt">5. (20 pt)</h3>
 
 <p>In sorting with <code>PANCAKE-GOD-ORACLE</code>, we use the medians between three arguments to gain order information about an input sequence <span class="mathjax-exps">$\langle t_1,t_2,\cdots,t_n\rangle$</span>. we perform the tests, <span class="mathjax-exps">$t_i \in (t_j, t_k)$</span>, <span class="mathjax-exps">$t_j\notin (t_i, t_k)$</span> and <span class="mathjax-exps">$t_k \notin (t_k, t_j)$</span> when <code>PANCAKE-GOD-ORACLE(P,i,j,k)=Pi</code>. we can not inspect the values of the elements or gain order information about the tastes in any other way.</p>
@@ -479,13 +479,36 @@ end
 <center>
 <img src="https://i.imgur.com/ieFNpO1.jpg">
 </center>
-<p><strong>Fig. 2-3.</strong> A <strong>decision tree model</strong> of sorting <span class="mathjax-exps">$t_{i}$</span> where <span class="mathjax-exps">$i\in \{1,...,4\}$</span> with calling the function <code>PANCAKE-GOD-ORACLE(P,i,j,k)</code>. The syntax <span class="mathjax-exps">$\fbox{t1:t2:t3}$</span> represents a function call <code>PANCAKE-GOD-ORACXLE(P,1,2,3)</code>, and the output is labelled on the links. The sorted list is described in the bracket <span class="mathjax-exps">$\langle t_i ,\cdots,t_j\rangle$</span>.</p>
+<p><strong>Fig. 1-3.</strong> A <strong>decision tree model</strong> of sorting <span class="mathjax-exps">$t_{i}$</span> where <span class="mathjax-exps">$i\in \{1,...,4\}$</span> with calling the function <code>PANCAKE-GOD-ORACLE(P,i,j,k)</code>. The syntax <span class="mathjax-exps">$\fbox{t1:t2:t3}$</span> represents a function call <code>PANCAKE-GOD-ORACXLE(P,1,2,3)</code>, and the output is labelled on the links. The sorted list is described in the bracket <span class="mathjax-exps">$\langle t_i ,\cdots,t_j\rangle$</span>.</p>
 <h3 class="mume-header" id="6-15pt">6. (15pt)</h3>
 
 <h3 class="mume-header" id="7-5pt">7. (5pt)</h3>
 
+<p>&#x1F4A1;<strong>Idea</strong></p>
+<blockquote>
+<p>Suppose we have a worst-case running time <span class="mathjax-exps">$T(n)$</span>, estimate the process region of the next reucrsive level.</p>
+</blockquote>
+<p>&#x1F4AC;<strong>Description</strong><br>
+When length of list is <span class="mathjax-exps">$n$</span>, <span class="mathjax-exps">$l=1$</span> and <span class="mathjax-exps">$r=n$</span>. The <code>ELF-SORT</code> function will proceed the list with length <span class="mathjax-exps">$n - \frac{1}{3} n$</span> for <span class="mathjax-exps">$3$</span> times, which is derived from <span class="mathjax-exps">$[l,r-\Delta]$</span> where <span class="mathjax-exps">$\Delta$</span> represent <span class="mathjax-exps">$\frac{1}{3}$</span> of current <span class="mathjax-exps">$n$</span>. The <code>swap</code> operation is independent from <span class="mathjax-exps">$n$</span>, so it can be done in constant time.</p>
+<p></p><div class="mathjax-exps">$$\begin{aligned}  T(n) &amp;= 3\underbrace{T(n - \frac{1}{3}n)}_{Next~function~call} + \underbrace{\Theta(1)}_{swap}\\      &amp;= 3T(\frac{n}{3/2}) + \Theta(1) \end{aligned}$$</div><p></p>
 <h3 class="mume-header" id="8-15pt">8. (15pt)</h3>
 
+<p>Let <span class="mathjax-exps">$a$</span> be the times of recursive calls and <span class="mathjax-exps">$b$</span> the ratio of current <span class="mathjax-exps">$n$</span> to the next. we have</p>
+<p></p><div class="mathjax-exps">$$T(n) = \underbrace{3}_{a}T(\frac{n}{\underbrace{\frac{3}{2}}_{b}}) + \Theta(1)$$</div><p></p>
+<p>let <span class="mathjax-exps">$f(n)$</span> be a function call of <code>SWAP</code>.</p>
+<p><strong>Number of <code>Swap</code> operation</strong></p>
+<p>The recursive function can be described in a tree structure (<strong>Fig. 1-4</strong>). The <code>swap</code> operation occurs on the leaf when <span class="mathjax-exps">$n=2$</span>. The height of the tree is around <span class="mathjax-exps">$\log_b n$</span>. Because all of the nodes have <span class="mathjax-exps">$a$</span> sub-nodes, that results in <span class="mathjax-exps">$a^{\log_b n}$</span> leaves, to say, <span class="mathjax-exps">$n^{\log_b a}$</span>. The sum of time complexity of swap operation is <span class="mathjax-exps">$\Theta(n^{\log_b a})$</span>.</p>
+<p><strong>Number of <code>ELF-SORT</code> calling</strong></p>
+<p>In <strong>Fig.1-4</strong>, each node represents a function call. The total function call is <span class="mathjax-exps">$g(n) = \sum_{j=0}^{\log_{b}(n) -1} a^j f(\frac{n}{b^j})$</span></p>
+<p><strong>Time complexity of <span class="mathjax-exps">$T(n)$</span></strong></p>
+<p>Because <span class="mathjax-exps">$f(n) \in \Theta(1)$</span>, <span class="mathjax-exps">$f(n) \in O(n^{\log_b a-\epsilon})$</span> for some constant <span class="mathjax-exps">$\epsilon&gt;0$</span>. This implies that <span class="mathjax-exps">$f(n/b^i) = O(n/b^j)^{\log_b a - \epsilon}$</span> where <span class="mathjax-exps">$\log_b a$</span> is the height of the recursive tree (<strong>Fig. 1-4</strong>). We get</p>
+<p></p><div class="mathjax-exps">$$\begin{aligned}     g(n) &amp;= \sum_{j=0}^{\log_{b}(n) -1} a^j f(\frac{n}{b^j}) \\          &amp;= \sum_{j=0}^{\log_{b}(n) -1} a^j (\frac{n}{b^j})^{\log_b a - \epsilon} \\          &amp;= n^{\log_b a-\epsilon} \sum_{j=0}^{\log_{b}(n) -1} (\frac{ab^\epsilon}{\underbrace{b^{\log_b a}}_{=a}})^j \\          &amp;= n^{\log_b a-\epsilon} \underbrace{\sum_{j=0}^{\log_{b}(n) -1} (b^\epsilon)^j}_{\text{Geometric series}} \\          &amp;= n^{\log_b a-\epsilon} (\frac{\overbrace{b^{\epsilon \log_b n}}^{n^\epsilon} - 1}{b^\epsilon - 1}) \\          &amp;= n^{\log_b a - \epsilon} (\frac{n^\epsilon - 1}{b^\epsilon - 1}) \\          &amp;\in O(n^{log_{b} a}) \end{aligned}$$</div><p></p>
+<p>Therefore, the total time complexity is<br>
+</p><div class="mathjax-exps">$$\begin{aligned}     T(n) &amp;= \underbrace{O(n^{\log_b a})}_{g} + \underbrace{\Theta(n^{\log_b a})}_{f} \\          &amp;= O(n^{\log_b a}) = O(n^{\log_{3/2}3}) \\          &amp;\approx O(n^{2.7}) \in O(n^3)  \end{aligned}$$</div><p></p>
+<center>
+<img width="400" src="https://i.imgur.com/VlJuon8.png">
+<p><strong>Fig. 1-4.</strong> Time complexity of a recursive function. Time complexity is labelled on nodes and leaves. The figure is modified from <sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>.</p>
+</center>
 <hr>
 <h2 class="mume-header" id="problem-2-tree-65pt">Problem 2 - Tree (65pt)</h2>
 
@@ -519,14 +542,14 @@ end
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><h3 class="mume-header" id="2-15pt">2. (15pt)</h3>
 
 <p>Because avery sub-tree of <span class="mathjax-exps">$T$</span> is a binary search tree, and left sub-sub-tree contains data earlier than the sub-tree&apos;s root in time. That is, for the set <span class="mathjax-exps">$\{t_i | i\in left~side~of~t_k\}$</span> fullfills the inequality <span class="mathjax-exps">$t_{i} &lt; t_{k}$</span>.</p>
-<p><span class="mathjax-exps">$\textbf{t_1 &lt; t_2 &lt; ...} &lt; t_k &lt; \cdots &lt; t_{n-1} &lt; t_n$</span></p>
+<p></p><div class="mathjax-exps">$$\textbf{t_1 &lt; t_2 &lt; ...} &lt; t_k &lt; \cdots &lt; t_{n-1} &lt; t_n$$</div><p></p>
 <p>where the set of left nodes is in <strong>bold</strong> font. We can first proof that we can find the previous node of <span class="mathjax-exps">$t_{1}$</span> that is an empty set (<code>NIL</code>).</p>
 <p>For finding <span class="mathjax-exps">$t_{k-1}$</span>, there is no other value between <span class="mathjax-exps">$t_{k-1}$</span> and <span class="mathjax-exps">$t_{k}$</span> that is smaller than <span class="mathjax-exps">$t_k$</span>. Therefore, we need to find the biggies value in the set <span class="mathjax-exps">$\{t_i | i\in left~side~of~t_k\}$</span>. By keep reaching the <strong>right leaf</strong>, we can get the biggest value of <span class="mathjax-exps">$\{t_i | i\in left~side~of~t_k\}$</span>. That is <span class="mathjax-exps">$t_{k-1}$</span>.</p>
 <h3 class="mume-header" id="3-10pt">3. (10pt)</h3>
 
 <center>
 <img width="300" src="https://i.imgur.com/k3pNorJ.jpg">
-<p><strong>Fig. 2-1.</strong> Reconstructed binary tree<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>.</p>
+<p><strong>Fig. 2-1.</strong> Reconstructed binary tree<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup>.</p>
 </center>
 <h3 class="mume-header" id="4-15pt">4. (15pt)</h3>
 
@@ -539,7 +562,7 @@ end
 <center>
 <img width="300" src="https://i.imgur.com/J4m4hog.jpg">
 <p><strong>Fig. 2-2.</strong> Reucrsive algoritm of reconstructing a binary tree with preorder and inorder traversal<br>
-<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup>.</p>
+<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup>.</p>
 </center>
 <h3 class="mume-header" id="5-15pt">5. (15pt)</h3>
 
@@ -614,8 +637,8 @@ end
 
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><p>Note:</p>
 <ol>
-<li>This framework is majorly inspired by <sup class="footnote-ref"><a href="#fn5" id="fnref5:1">[5:1]</a></sup> and <sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></li>
-<li>In Julia: <code>a[3:end] == []</code> when <code>length(a) == 2</code><sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></li>
+<li>This framework is majorly inspired by <sup class="footnote-ref"><a href="#fn6" id="fnref6:1">[6:1]</a></sup> and <sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></li>
+<li>In Julia: <code>a[3:end] == []</code> when <code>length(a) == 2</code><sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></li>
 </ol>
 <hr>
 <h2 class="mume-header" id="problem-3-heap-55pt">Problem 3 - Heap (55pt)</h2>
@@ -1037,13 +1060,15 @@ end
 </li>
 <li id="fn3" class="footnote-item"><p><a href="https://stackoverflow.com/questions/1364444/difference-between-big-o-and-little-o-notation">Difference between Big-O and Little-O Notation. StackOverflow</a> <a href="#fnref3" class="footnote-backref">&#x21A9;&#xFE0E;</a></p>
 </li>
-<li id="fn4" class="footnote-item"><p><a href="https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/solution/">LeetCode: Binary Tree Traversal</a> <a href="#fnref4" class="footnote-backref">&#x21A9;&#xFE0E;</a></p>
+<li id="fn4" class="footnote-item"><p>CLRS, Introduction to Algorithm. 3rd edition. P. 99. <a href="#fnref4" class="footnote-backref">&#x21A9;&#xFE0E;</a></p>
 </li>
-<li id="fn5" class="footnote-item"><p><a href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=&amp;ved=2ahUKEwiIzf_Av8bwAhUvy4sBHem3BCgQFjABegQIBBAD&amp;url=https%3A%2F%2Fs3-eu-west-1.amazonaws.com%2Fpfigshare-u-files%2F1800958%2FConstructionofuniqueBinarytree.pdf&amp;usg=AOvVaw23KzE0wgqxMB83ms4ZTp6Y"> Construction of unique Binary tree. Book chapter</a> <a href="#fnref5" class="footnote-backref">&#x21A9;&#xFE0E;</a> <a href="#fnref5:1" class="footnote-backref">&#x21A9;&#xFE0E;</a></p>
+<li id="fn5" class="footnote-item"><p><a href="https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/solution/">LeetCode: Binary Tree Traversal</a> <a href="#fnref5" class="footnote-backref">&#x21A9;&#xFE0E;</a></p>
 </li>
-<li id="fn6" class="footnote-item"><p><a href="https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/discuss/1204516/recursive">BST recursive</a> <a href="#fnref6" class="footnote-backref">&#x21A9;&#xFE0E;</a></p>
+<li id="fn6" class="footnote-item"><p><a href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=&amp;ved=2ahUKEwiIzf_Av8bwAhUvy4sBHem3BCgQFjABegQIBBAD&amp;url=https%3A%2F%2Fs3-eu-west-1.amazonaws.com%2Fpfigshare-u-files%2F1800958%2FConstructionofuniqueBinarytree.pdf&amp;usg=AOvVaw23KzE0wgqxMB83ms4ZTp6Y"> Construction of unique Binary tree. Book chapter</a> <a href="#fnref6" class="footnote-backref">&#x21A9;&#xFE0E;</a> <a href="#fnref6:1" class="footnote-backref">&#x21A9;&#xFE0E;</a></p>
 </li>
-<li id="fn7" class="footnote-item"><pre data-role="codeBlock" data-info="julia" class="language-julia">julia<span class="token operator">&gt;</span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">]</span>
+<li id="fn7" class="footnote-item"><p><a href="https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/discuss/1204516/recursive">BST recursive</a> <a href="#fnref7" class="footnote-backref">&#x21A9;&#xFE0E;</a></p>
+</li>
+<li id="fn8" class="footnote-item"><pre data-role="codeBlock" data-info="julia" class="language-julia">julia<span class="token operator">&gt;</span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">]</span>
 <span class="token number">4</span><span class="token operator">-</span>element Array<span class="token punctuation">{</span>Int64<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">:</span>
 <span class="token number">1</span>
 <span class="token number">2</span>
@@ -1052,7 +1077,7 @@ end
 
 julia<span class="token operator">&gt;</span> a<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">:</span><span class="token keyword">end</span><span class="token punctuation">]</span>
 Int64<span class="token punctuation">[</span><span class="token punctuation">]</span>
-</pre> <a href="#fnref7" class="footnote-backref">&#x21A9;&#xFE0E;</a></li>
+</pre> <a href="#fnref8" class="footnote-backref">&#x21A9;&#xFE0E;</a></li>
 </ol>
 </section>
 

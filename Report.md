@@ -184,7 +184,7 @@ The reason to use bianry search:
 
 <img width=500 src="https://i.imgur.com/hx4MUIS.png">
 
-**Fig. 2-1.** Conditions of inserting a new value. 
+**Fig. 1-1.** Conditions of inserting a new value. 
 </center>
 
 
@@ -215,7 +215,7 @@ On the other hand, the query complexity of one insertion is $O(\log n)$, and the
 </center>
 
 
-**Fig. 2-2.**   Any list of two items is sorted, and can be applied to the insertion algorithm described in **Fig. 2-1**.
+**Fig. 1-2.**   Any list of two items is sorted, and can be applied to the insertion algorithm described in **Fig. 2-1**.
 
 
 
@@ -254,7 +254,7 @@ where $f(n)$ is the query complexity in respect of $n$. Therefore, the equation 
 <img  src="https://i.imgur.com/ieFNpO1.jpg">
 </center>
 
-**Fig. 2-3.** A **decision tree model** of sorting $t_{i}$ where $i\in \{1,...,4\}$ with calling the function `PANCAKE-GOD-ORACLE(P,i,j,k)`. The syntax $\fbox{t1:t2:t3}$ represents a function call `PANCAKE-GOD-ORACXLE(P,1,2,3)`, and the output is labelled on the links. The sorted list is described in the bracket $\langle t_i ,\cdots,t_j\rangle$.
+**Fig. 1-3.** A **decision tree model** of sorting $t_{i}$ where $i\in \{1,...,4\}$ with calling the function `PANCAKE-GOD-ORACLE(P,i,j,k)`. The syntax $\fbox{t1:t2:t3}$ represents a function call `PANCAKE-GOD-ORACXLE(P,1,2,3)`, and the output is labelled on the links. The sorted list is described in the bracket $\langle t_i ,\cdots,t_j\rangle$.
 
 
 
@@ -268,19 +268,72 @@ where $f(n)$ is the query complexity in respect of $n$. Therefore, the equation 
 
 ### 7. (5pt)
 
-$$\begin{align*} 
-T(n) &= 3 T(n - \frac{1}{3}n) + \Theta(1) \\
+💡**Idea**
+
+>Suppose we have a worst-case running time $T(n)$, estimate the process region of the next reucrsive level.
+
+💬**Description**
+When length of list is $n$, $l=1$ and $r=n$. The `ELF-SORT` function will proceed the list with length $n - \frac{1}{3} n$ for $3$ times, which is derived from $[l,r-\Delta]$ where $\Delta$ represent $\frac{1}{3}$ of current $n$. The `swap` operation is independent from $n$, so it can be done in constant time.
+
+
+
+$$\begin{aligned} 
+T(n) &= 3\underbrace{T(n - \frac{1}{3}n)}_{Next~function~call} + \underbrace{\Theta(1)}_{swap}\\
      &= 3T(\frac{n}{3/2}) + \Theta(1)
-\end{align*}$$
+\end{aligned}$$
+
+
 
 
 
 ### 8. (15pt)
 
+Let $a$ be the times of recursive calls and $b$ the ratio of current $n$ to the next. we have 
+
+$$T(n) = \underbrace{3}_{a}T(\frac{n}{\underbrace{\frac{3}{2}}_{b}}) + \Theta(1)$$
+
+let $f(n)$ be a function call of `SWAP`.
+
+**Number of `Swap` operation**
+
+The recursive function can be described in a tree structure (**Fig. 1-4**). The `swap` operation occurs on the leaf when $n=2$. The height of the tree is around $\log_b n$. Because all of the nodes have $a$ sub-nodes, that results in $a^{\log_b n}$ leaves, to say, $n^{\log_b a}$. The sum of time complexity of swap operation is $\Theta(n^{\log_b a})$.
 
 
+**Number of `ELF-SORT` calling**
+
+In **Fig.1-4**, each node represents a function call. The total function call is $g(n) = \sum_{j=0}^{\log_{b}(n) -1} a^j f(\frac{n}{b^j})$
 
 
+**Time complexity of $T(n)$**
+
+Because $f(n) \in \Theta(1)$, $f(n) \in O(n^{\log_b a-\epsilon})$ for some constant $\epsilon>0$. This implies that $f(n/b^i) = O(n/b^j)^{\log_b a - \epsilon}$ where $\log_b a$ is the height of the recursive tree (**Fig. 1-4**). We get 
+
+$$\begin{aligned}
+    g(n) &= \sum_{j=0}^{\log_{b}(n) -1} a^j f(\frac{n}{b^j}) \\
+         &= \sum_{j=0}^{\log_{b}(n) -1} a^j (\frac{n}{b^j})^{\log_b a - \epsilon} \\
+         &= n^{\log_b a-\epsilon} \sum_{j=0}^{\log_{b}(n) -1} (\frac{ab^\epsilon}{\underbrace{b^{\log_b a}}_{=a}})^j \\
+         &= n^{\log_b a-\epsilon} \underbrace{\sum_{j=0}^{\log_{b}(n) -1} (b^\epsilon)^j}_{\text{Geometric series}} \\
+         &= n^{\log_b a-\epsilon} (\frac{\overbrace{b^{\epsilon \log_b n}}^{n^\epsilon} - 1}{b^\epsilon - 1}) \\
+         &= n^{\log_b a - \epsilon} (\frac{n^\epsilon - 1}{b^\epsilon - 1}) \\
+         &\in O(n^{log_{b} a})
+\end{aligned}$$
+
+Therefore, the total time complexity is 
+$$\begin{aligned}
+    T(n) &= \underbrace{O(n^{\log_b a})}_{g} + \underbrace{\Theta(n^{\log_b a})}_{f} \\
+         &= O(n^{\log_b a}) = O(n^{\log_{3/2}3}) \\
+         &\approx O(n^{2.7}) \in O(n^3) 
+\end{aligned}$$
+
+
+<center>
+<img width=400 src="https://i.imgur.com/VlJuon8.png">
+
+**Fig. 1-4.** Time complexity of a recursive function. Time complexity is labelled on nodes and leaves. The figure is modified from [^CLRS:Master].
+</center>
+
+
+[^CLRS:Master]: CLRS, Introduction to Algorithm. 3rd edition. P. 99.
 
 
 ---
@@ -323,7 +376,7 @@ end
 
 Because avery sub-tree of $T$ is a binary search tree, and left sub-sub-tree contains data earlier than the sub-tree's root in time. That is, for the set $\{t_i | i\in left~side~of~t_k\}$ fullfills the inequality $t_{i} < t_{k}$.
 
-$\textbf{t_1 < t_2 < ...} < t_k < \cdots < t_{n-1} < t_n$
+$$\textbf{t_1 < t_2 < ...} < t_k < \cdots < t_{n-1} < t_n$$
 
 where the set of left nodes is in **bold** font. We can first proof that we can find the previous node of $t_{1}$ that is an empty set (`NIL`). 
 
