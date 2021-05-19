@@ -264,7 +264,21 @@ where $f(n)$ is the query complexity in respect of $n$. Therefore, the equation 
 
 ### 6. (15pt)
 
+**When $n=2$**
 
+When $n=2$, the list is sorted by `swap` operation.
+
+**Suppose first `ELF-SORT` call sorts the sub-list, the following operation remain the list sorted**
+
+We assume the first $\frac{2}{3}n$ can be sorted by the first `ELF-SORT` call (`Sorted-1` in **Fig.1-5**). The second `ELF-SORT` sorted the last $\frac{2}{3}$ portion of $n$, which is notated as `Sorted-2`. Now, both of first $\frac{1}{3}n$ and last $\frac{2}{3}n$ are sorted locally. As a sorted sub-list, $i>j$ for $i\in [l, l+\Delta)\}$ and $j\in [l+\Delta, l+2\Delta)\}$. The third `ELF-SORT` call is to merge the first $\frac{1}{2}$ of `Sorted-2` with `Sorted-1`. Because $\{i|i\in [l+\Delta, r)\}$ is sorted in descendind order, $i>j$ for $i\in [l+\Delta, r-\Delta)\}$ and $j\in [l+2\Delta, r)\}$. Therefore, it is guaranteed that all the elements in `Sorted-3` is larger than those in `Sorted-2`, and both `Sorted-3` and `Sorted-2` are sorted locally. The list is sorted by `ELF-SORT`.
+
+
+
+<center>
+<img width=400 src="https://i.imgur.com/emhCDjz.jpg">
+
+**Fig. 1-5.** Sorting procedures via `ELF-SORT`. Three lists represent sorted lists after first, second and last `ELF-SORT` call respectively. The unsorted region is labelled with `random`; sorted region `Sorted-i` where `i` represents sorting by $i^{th}$ `ELF-SORT` call, $i\in\{1,2,3\}$.
+</center>
 
 ### 7. (5pt)
 
