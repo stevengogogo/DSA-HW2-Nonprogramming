@@ -215,7 +215,7 @@ On the other hand, the query complexity of one insertion is $O(\log n)$, and the
 </center>
 
 
-**Fig. 1-2.**   Any list of two items is sorted, and can be applied to the insertion algorithm described in **Fig. 2-1**.
+**Fig. 1-2.**   Any list of two items is sorted, and can be applied to the insertion algorithm described in **Fig. 1-1**.
 
 
 
